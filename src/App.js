@@ -7,8 +7,15 @@ import {nanoid} from "nanoid"
 import "react-mde/lib/styles/css/react-mde-all.css";
 
 /**
- * Challenge: When the user edits a note, reposition
- * it in the list of notes to the top of the list
+ * Challenge: complete and implement the deleteNote function
+ *
+ * Hints:
+ * 1. What array method can be used to return a new
+ *    array that has filtered out an item based
+ *    on a condition?
+ * 2. Notice the parameters being based to the function
+ *    and think about how both of those parameters
+ *    can be passed in during the onClick event handler
  */
 export default function App() {
   /* lazy state initialization  of`notes` state, so it doesn't
@@ -25,6 +32,11 @@ export default function App() {
     //console.log(JSON.stringify(notes));
   }, [notes])
 
+  function deleteNote(event,noteId) {
+    event.stopPropagation()
+    setNotes(oldNotes=>oldNotes.filter(oldNote=>oldNote.id!==noteId));
+  }
+
   function createNewNote() {
     const newNote = {
       id: nanoid(),
@@ -39,7 +51,7 @@ export default function App() {
     setNotes(oldNotes =>{
         let newArr = [];
         for(let i=0;i<oldNotes.length;i++){
-          if(oldNotes[i].id == currentNoteId){
+          if(oldNotes[i].id === currentNoteId){
             newArr.unshift({ ...oldNotes[i], body: text })
           }else{
             newArr.push(oldNotes[i]);
@@ -79,6 +91,7 @@ export default function App() {
                     currentNote={findCurrentNote()}
                     setCurrentNoteId={setCurrentNoteId}
                     newNote={createNewNote}
+                    deleteNote={deleteNote}
                 />
                 {
                     currentNoteId &&
