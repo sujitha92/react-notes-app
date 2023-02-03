@@ -5,20 +5,24 @@ import { data } from "./data"
 import Split from "react-split"
 import {nanoid} from "nanoid"
 import "react-mde/lib/styles/css/react-mde-all.css";
-/**
- * 1. Every time the `notes` array changes, save it
- *    in localStorage. You'll need to use JSON.stringify()
- *    to turn the array into a string to save in localStorage.
- * 2. When the app first loads, initialize the notes state
- *    with the notes saved in localStorage. You'll need to
- *    use JSON.parse() to turn the stringified array back
- *    into a real JS array.
- */
 
+/**
+ * Challenge: Try to figure out a way to display only the
+ * first line of note.body as the note summary in the
+ * sidebar.
+ *
+ * Hint 1: note.body has "invisible" newline characters
+ * in the text every time there's a new line shown. E.g.
+ * the text in Note 1 is:
+ * "# Note summary\n\nBeginning of the note"
+ *
+ * Hint 2: See if you can split the string into an array
+ * using the "\n" newline character as the divider
+ */
 export default function App() {
-  /*lazy state initialization  of`notes` state so it doesn't
+  /* lazy state initialization  of`notes` state, so it doesn't
   reach into localStorage on every single re-render
-  of the App component*/
+  of the App component */
 
   const [notes, setNotes] = React.useState( ()=>JSON.parse(localStorage.getItem("notes")) || [])
   const [currentNoteId, setCurrentNoteId] = React.useState(
@@ -27,6 +31,7 @@ export default function App() {
 
   React.useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes))
+    //console.log(JSON.stringify(notes));
   }, [notes])
 
   function createNewNote() {
